@@ -328,6 +328,7 @@ export class AutoGenerator {
         let val_text = defaultVal;
         if (_.isString(defaultVal)) {
           const field_type = fieldObj.type.toLowerCase();
+          const originalVal = defaultVal;
           defaultVal = this.escapeSpecial(defaultVal);
 
           while (defaultVal.startsWith('(') && defaultVal.endsWith(')')) {
@@ -350,7 +351,8 @@ export class AutoGenerator {
 
           } else if (field_type.match(/^(json)/)) {
             // don't quote json
-            val_text = defaultVal;
+            // defaultVal has been escaped already, so we use the original value here
+            val_text = originalVal;
 
           } else if (field_type === 'uuid' && (defaultVal === 'gen_random_uuid()' || defaultVal === 'uuid_generate_v4()')) {
             val_text = "DataTypes.UUIDV4";
